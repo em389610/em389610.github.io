@@ -1,1 +1,120 @@
-ToDo
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1265.21">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">  &lt;head&gt;</p>
+<p class="p1">    &lt;style&gt;</p>
+<p class="p1">      body {</p>
+<p class="p1">        color: #222;</p>
+<p class="p1">        font: 14px Arial;</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      body a {</p>
+<p class="p1">        color: #3D5C9D;</p>
+<p class="p1">        text-decoration: none;</p>
+<p class="p1">      }</p>
+<p class="p1">    &lt;/style&gt;</p>
+<p class="p1">    &lt;script&gt;</p>
+<p class="p1">      var html5rocks = {};</p>
+<p class="p1">      html5rocks.webdb = {};</p>
+<p class="p1">      html5rocks.webdb.db = null;</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.open = function() {</p>
+<p class="p1">        var dbSize = 5 * 1024 * 1024; // 5MB</p>
+<p class="p1">        html5rocks.webdb.db = openDatabase("Todo", "1.0", "Todo manager", dbSize);</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.createTable = function() {</p>
+<p class="p1">        var db = html5rocks.webdb.db;</p>
+<p class="p1">        db.transaction(function(tx) {</p>
+<p class="p1">          tx.executeSql("CREATE TABLE IF NOT EXISTS todo(ID INTEGER PRIMARY KEY ASC, todo TEXT, added_on DATETIME)", []);</p>
+<p class="p1">        });</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.addTodo = function(todoText) {</p>
+<p class="p1">        var db = html5rocks.webdb.db;</p>
+<p class="p1">        db.transaction(function(tx){</p>
+<p class="p1">          var addedOn = new Date();</p>
+<p class="p1">          tx.executeSql("INSERT INTO todo(todo, added_on) VALUES (?,?)",</p>
+<p class="p1">              [todoText, addedOn],</p>
+<p class="p1">              html5rocks.webdb.onSuccess,</p>
+<p class="p1">              html5rocks.webdb.onError);</p>
+<p class="p1">         });</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.onError = function(tx, e) {</p>
+<p class="p1">        alert("There has been an error: " + e.message);</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.onSuccess = function(tx, r) {</p>
+<p class="p1">        // re-render the data.</p>
+<p class="p1">        html5rocks.webdb.getAllTodoItems(loadTodoItems);</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.getAllTodoItems = function(renderFunc) {</p>
+<p class="p1">        var db = html5rocks.webdb.db;</p>
+<p class="p1">        db.transaction(function(tx) {</p>
+<p class="p1">          tx.executeSql("SELECT * FROM todo", [], renderFunc,</p>
+<p class="p1">              html5rocks.webdb.onError);</p>
+<p class="p1">        });</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      html5rocks.webdb.deleteTodo = function(id) {</p>
+<p class="p1">        var db = html5rocks.webdb.db;</p>
+<p class="p1">        db.transaction(function(tx){</p>
+<p class="p1">          tx.executeSql("DELETE FROM todo WHERE ID=?", [id],</p>
+<p class="p1">              html5rocks.webdb.onSuccess,</p>
+<p class="p1">              html5rocks.webdb.onError);</p>
+<p class="p1">          });</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      function loadTodoItems(tx, rs) {</p>
+<p class="p1">        var rowOutput = "";</p>
+<p class="p1">        var todoItems = document.getElementById("todoItems");</p>
+<p class="p1">        for (var i=0; i &lt; rs.rows.length; i++) {</p>
+<p class="p1">          rowOutput += renderTodo(rs.rows.item(i));</p>
+<p class="p1">        }</p>
+<p class="p1">      </p>
+<p class="p1">        todoItems.innerHTML = rowOutput;</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      function renderTodo(row) {</p>
+<p class="p1">        return "&lt;li&gt;" + row.todo  + " [&lt;a href='javascript:void(0);'  onclick='html5rocks.webdb.deleteTodo(" + row.ID +");'&gt;Delete&lt;/a&gt;]&lt;/li&gt;";</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      function init() {</p>
+<p class="p1">        html5rocks.webdb.open();</p>
+<p class="p1">        html5rocks.webdb.createTable();</p>
+<p class="p1">        html5rocks.webdb.getAllTodoItems(loadTodoItems);</p>
+<p class="p1">      }</p>
+<p class="p1">      </p>
+<p class="p1">      function addTodo() {</p>
+<p class="p1">        var todo = document.getElementById("todo");</p>
+<p class="p1">        html5rocks.webdb.addTodo(todo.value);</p>
+<p class="p1">        todo.value = "";</p>
+<p class="p1">      }</p>
+<p class="p1">    &lt;/script&gt;</p>
+<p class="p1">  &lt;/head&gt;</p>
+<p class="p1">  &lt;body onload="init();"&gt;</p>
+<p class="p1">    &lt;ul id="todoItems"&gt;</p>
+<p class="p1">    &lt;/ul&gt;</p>
+<p class="p1">    &lt;form type="post" onsubmit="addTodo(); return false;"&gt;</p>
+<p class="p1">      &lt;input type="text" id="todo" name="todo" placeholder="What do you need to do?" style="width: 200px;" /&gt;</p>
+<p class="p1">      &lt;input type="submit" value="Add Todo Item"/&gt;</p>
+<p class="p1">    &lt;/form&gt;</p>
+<p class="p1">  &lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>

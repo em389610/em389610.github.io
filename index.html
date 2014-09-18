@@ -1,11 +1,9 @@
 
 
-<h1 id="name">List of Summer Ideas</h1>
+<h1 id="name">Uppercase Converter</h1>
 
 
-<a href="http://tinypic.com?ref=x0terk" target="_blank"><img src="http://i59.tinypic.com/x0terk.jpg" border="0" alt="Image and video hosting by TinyPic"></a>
-
-<p>Enter something you plan to do this summer:</p>
+<p>Type Something That You Wish To Make Uppercase:</p>
 <input type="text" id="myTextField"/>
 <input type="submit" id="byBtn" value="Change" onclick="change()"/>
 <p></p>
@@ -16,6 +14,7 @@
 function change(){
     
    var myNewTitle = document.getElementById('myTextField').value;
+var res = myNewTitle.toUpperCase();
    if( myNewTitle.length==0 ){
        alert('Write Some real Text please.');
    return;
@@ -24,7 +23,7 @@ function change(){
    var title = document.getElementById('title');
    title.innerHTML += String.fromCharCode(10);
     title.appendChild(document.createElement("br"));
-    title.innerHTML += myNewTitle;
+    title.innerHTML += res;
     
 }
 

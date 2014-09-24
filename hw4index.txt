@@ -1,14 +1,14 @@
-
-
+<body>
 <h1 id="name">List of Summer Ideas</h1>
 
 
+<a href="http://tinypic.com?ref=2jf0tq9" target="_blank"><img src="http://i59.tinypic.com/2jf0tq9.jpg" border="0" alt="Image and video hosting by TinyPic"> </a><br>
 <p>Enter something you plan to do this summer:</p>
 <input type="text" id="myTextField"/>
 <input type="submit" id="byBtn" value="Change" onclick="change()"/>
 <p></p>
-<p1 id="title"></p1>
-
+<p id="title"></p>
+</body>
 
 <script>
 function change(){
@@ -23,7 +23,7 @@ function change(){
    var title = document.getElementById('title');
    title.innerHTML += String.fromCharCode(10);
     title.appendChild(document.createElement("br"));
-    title.innerHTML += res;
+    title.innerHTML += myNewTitle;
     
 }
 
